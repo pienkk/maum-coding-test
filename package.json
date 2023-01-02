@@ -19,9 +19,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm": "typeorm-ts-node-commonjs -d ./src/dataSource.ts",
+    "typeorm": "typeorm-ts-node-commonjs ",
     "migrate:create": "npm run typeorm migration:create",
-    "migrate:run": "npm run typeorm migration:run"
+    "migrate:run": "npm run typeorm migration:run -d ./src/dataSource.ts"
   },
   "dependencies": {
     "@nestjs/apollo": "^10.1.7",
