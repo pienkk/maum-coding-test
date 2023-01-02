@@ -1,0 +1,37 @@
+type Query {
+  user: User!
+  hello: String!
+}
+
+type Mutation {
+  signIn(email: String!, password: String!): Token
+
+  createUser(createUserInput: CreateUserInput!): User!
+
+  updateUser(updateUserInput: UpdateUserInput!): User!
+
+  removeUser(id: ID!): Boolean!
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  created_at: String!
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+type Token {
+  accessToken: String
+}

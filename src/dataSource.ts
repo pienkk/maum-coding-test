@@ -1,4 +1,5 @@
 import { DataSource } from 'typeorm';
+import * as dotenv from 'dotenv';
 
 export const pgDataSource = new DataSource({
   type: 'postgres',
@@ -6,7 +7,7 @@ export const pgDataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   port: +process.env.DB_PORT,
   host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
+  database: 'maum',
   synchronize: false,
   entities: ['dist/**/*.entity.js'],
   migrations: ['migrations/*.ts'],
