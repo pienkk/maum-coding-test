@@ -33,7 +33,7 @@ export abstract class IMutation {
 
     abstract updateUser(updateUserInput: UpdateUserInput): User | Promise<User>;
 
-    abstract removeUser(id: string): boolean | Promise<boolean>;
+    abstract removeUser(password: string): boolean | Promise<boolean>;
 }
 
 export class User {

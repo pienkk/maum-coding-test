@@ -3,7 +3,6 @@ import {
   BeforeInsert,
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -37,6 +36,7 @@ export class UserEntity {
   }
 
   comparePassword(attempt: string): boolean {
+    console.log(attempt, this.password);
     return bcrypt.compareSync(attempt, this.password);
   }
 }

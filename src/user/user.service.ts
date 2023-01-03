@@ -21,7 +21,7 @@ export class UserService {
     if (!user.comparePassword(password))
       throw new HttpException('Invalid password', HttpStatus.BAD_REQUEST);
 
-    const payload: JwtPayload = { id: user.id, name: user.name };
+    const payload: JwtPayload = { id: user.id, email: user.email };
     return { accessToken: this.jwtService.sign(payload) };
   }
 
@@ -44,16 +44,17 @@ export class UserService {
     if (!user || user.deleted_at)
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 
-    const result = await this.userRepository.updateUser(args);
-    //   if (result.affected !== 0)
-    return await this.userRepository.getUserByEmail(email);
+    return this.userRepository.updateUser(args, user);
   }
 
-  async removeUser(id: number) {
+  async removeUser({ id }: JwtPayload, password: string) {
     const user = await this.userRepository.getUserById(id);
 
     if (!user || user.deleted_at)
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+
+    if (!user.comparePassword(password))
+      throw new HttpException('Invalid password', HttpStatus.BAD_REQUEST);
 
     const result = await this.userRepository.removeUser(user);
 
