@@ -1,7 +1,7 @@
 import { CustomRepository } from 'config/typeorm/typeorm-ex.decorator';
 import { CreateUserInput, UpdateUserInput } from 'src/graphql';
 import { Repository } from 'typeorm';
-import { CreateUpdateUserDto } from '../dto/user.dto';
+
 import { UserEntity } from './user.entity';
 
 @CustomRepository(UserEntity)

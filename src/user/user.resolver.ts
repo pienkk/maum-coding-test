@@ -30,9 +30,9 @@ export class UserResolver {
   @Mutation('removeUser')
   @UseGuards(JwtAuthGuard)
   removeUser(
-    @CurrentUser() CurrentUser: JwtPayload,
+    @CurrentUser() currentUser: JwtPayload,
     @Args('password') password: string,
   ): Promise<boolean> {
-    return this.userService.removeUser(CurrentUser, password);
+    return this.userService.removeUser(currentUser, password);
   }
 }
