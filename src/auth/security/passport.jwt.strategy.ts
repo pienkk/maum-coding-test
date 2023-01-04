@@ -17,6 +17,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(req, payload: JwtPayload) {
     const user = await this.authService.tokenValidateUser(payload);
+
     if (!user || user.deleted_at) {
       throw new UnauthorizedException({
         message: 'This token has user not found',

@@ -1,3 +1,4 @@
+import { ReplyEntity } from 'src/reply/entity/reply.entity';
 import { UserEntity } from 'src/user/entity/user.entity';
 import {
   Column,
@@ -5,6 +6,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -28,7 +30,10 @@ export class PostEntity {
   @Column({ nullable: true })
   deleted_at: Date;
 
-  @ManyToOne(() => UserEntity, (user) => user.post)
+  @ManyToOne(() => UserEntity, (user) => user.posts)
   @JoinColumn({ name: 'userId' })
   user: UserEntity;
+
+  @OneToMany(() => ReplyEntity, (reply) => reply.post)
+  replies: ReplyEntity[];
 }

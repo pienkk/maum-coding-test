@@ -58,10 +58,6 @@ export class UserService {
 
     const result = await this.userRepository.removeUser(user);
 
-    if (result.deleted_at) return true;
-
-    return false;
-
     return result.deleted_at ? true : false;
   }
 }

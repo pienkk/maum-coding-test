@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { PostEntity } from 'src/post/entity/post.entity';
+import { ReplyEntity } from 'src/reply/entity/reply.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -33,7 +34,10 @@ export class UserEntity {
   deleted_at: Date;
 
   @OneToMany(() => PostEntity, (post) => post.user)
-  post: PostEntity[];
+  posts: PostEntity[];
+
+  @OneToMany(() => ReplyEntity, (reply) => reply.user)
+  replies: ReplyEntity[];
 
   @BeforeInsert()
   hashPassword() {
@@ -41,7 +45,6 @@ export class UserEntity {
   }
 
   comparePassword(attempt: string): boolean {
-    console.log(attempt, this.password);
     return bcrypt.compareSync(attempt, this.password);
   }
 }

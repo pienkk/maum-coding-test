@@ -5,6 +5,8 @@ import { PostEntity } from './post.entity';
 
 @CustomRepository(PostEntity)
 export class PostRepository extends Repository<PostEntity> {
+  SHOW_COUNT = 10;
+
   async getPostById(id: number) {
     return await this.createQueryBuilder('p')
       .where('deleted_at is null')
@@ -18,8 +20,9 @@ export class PostRepository extends Repository<PostEntity> {
       .where('u.deleted_at is null')
       .andWhere('p.deleted_at is null')
       .andWhere('p.title LIKE :search', { search: `%${search}%` })
-      .take(10)
-      .skip(page - 1)
+      .take(this.SHOW_COUNT)
+      .skip(this.SHOW_COUNT * (page - 1))
+      .orderBy('r.created_at', 'ASC')
       .getManyAndCount();
   }
 
@@ -39,15 +42,14 @@ export class PostRepository extends Repository<PostEntity> {
       })
       .andWhere('p.deleted_at is null')
       .andWhere('p.title LIKE :search', { search: `%${search}%` })
-      .take(10)
-      .skip(page - 1)
+      .take(this.SHOW_COUNT)
+      .skip(this.SHOW_COUNT * (page - 1))
+      .orderBy('r.created_at', 'ASC')
       .getManyAndCount();
   }
 
   async createPost(args: PostEntity) {
-    const post = this.create(args);
-
-    return await this.save(post);
+    return await this.save(args);
   }
 
   async updatePost(args: PostEntity, post: PostEntity) {
