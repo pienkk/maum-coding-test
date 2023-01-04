@@ -9,6 +9,8 @@ import * as Joi from 'joi';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { AppService } from './app.service';
       useClass: TypeOrmConfigService,
       inject: [TypeOrmConfigService],
     }),
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
