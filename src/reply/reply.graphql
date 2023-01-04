@@ -1,0 +1,33 @@
+type Query {
+  fetchReplies(postId: ID!, page: String = "1"): FetchReplies
+}
+
+type Mutation {
+  createReply(createReplyInput: CreateReplyInput!): Reply!
+}
+
+type FetchReplies {
+  replies: [Reply]
+  count: String!
+}
+
+type Reply {
+  id: ID!
+  postId: ID!
+  comment: String!
+  created_at: DateTime!
+  user: User!
+  parents: [Reply]
+}
+
+input CreateReplyInput {
+  postId: ID!
+  comment: String!
+  replyId: ID
+}
+
+input UpdateReplyInput {
+  id: ID!
+  postId: ID!
+  comment: String!
+}

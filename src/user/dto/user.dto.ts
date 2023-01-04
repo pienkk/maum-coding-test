@@ -1,9 +1,18 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Matches,
+} from 'class-validator';
 
 export class CreateUpdateUserDto {
+  @IsOptional()
+  @IsString()
   id?: string;
 
   @IsNotEmpty()
+  @IsString()
   name: string;
 
   @IsNotEmpty()
@@ -11,6 +20,9 @@ export class CreateUpdateUserDto {
   email: string;
 
   @IsNotEmpty()
+  @Matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, {
+    message: 'Password rule does not comply',
+  })
   password: string;
 }
 
@@ -20,6 +32,8 @@ export class SignInUserDto {
   email: string;
 
   @IsNotEmpty()
-  @IsString()
+  @Matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, {
+    message: 'Password rule does not comply',
+  })
   password: string;
 }

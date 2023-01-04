@@ -35,6 +35,7 @@ export class UserRepository extends Repository<UserEntity> {
 
   async removeUser(user: UserEntity) {
     user.deleted_at = new Date();
+
     return await this.save(user);
   }
 }

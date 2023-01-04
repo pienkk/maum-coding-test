@@ -19,7 +19,7 @@ export class createReplies1672579808607 implements MigrationInterface {
             isGenerated: true,
             generationStrategy: 'increment',
           },
-          { name: 'text', type: 'varchar' },
+          { name: 'comment', type: 'varchar' },
           { name: 'replyId', type: 'int', isNullable: true },
           { name: 'created_at', type: 'timestamp', default: 'now()' },
           { name: 'deleted_at', type: 'timestamp', isNullable: true },
