@@ -61,5 +61,7 @@ export class UserService {
     if (result.deleted_at) return true;
 
     return false;
+
+    return result.deleted_at ? true : false;
   }
 }
