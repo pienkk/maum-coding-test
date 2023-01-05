@@ -1,7 +1,10 @@
 scalar DateTime
+
 type Query {
   fetchPost(id: ID!): Post!
+
   fetchPosts(page: String = "1", search: String = ""): FetchPosts
+
   fetchMyPosts(page: String = "1", search: String = ""): FetchPosts
 }
 

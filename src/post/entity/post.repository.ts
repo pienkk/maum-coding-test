@@ -22,7 +22,7 @@ export class PostRepository extends Repository<PostEntity> {
       .andWhere('p.title LIKE :search', { search: `%${search}%` })
       .take(this.SHOW_COUNT)
       .skip(this.SHOW_COUNT * (page - 1))
-      .orderBy('r.created_at', 'ASC')
+      .orderBy('p.created_at', 'ASC')
       .getManyAndCount();
   }
 
@@ -44,7 +44,7 @@ export class PostRepository extends Repository<PostEntity> {
       .andWhere('p.title LIKE :search', { search: `%${search}%` })
       .take(this.SHOW_COUNT)
       .skip(this.SHOW_COUNT * (page - 1))
-      .orderBy('r.created_at', 'ASC')
+      .orderBy('p.created_at', 'ASC')
       .getManyAndCount();
   }
 
