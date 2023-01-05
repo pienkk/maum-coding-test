@@ -5,6 +5,11 @@ import { ReplyEntity } from './reply.entity';
 @CustomRepository(ReplyEntity)
 export class ReplyRepository extends Repository<ReplyEntity> {
   SHOW_COUNT = 10;
+
+  async getReplyById(id: number) {
+    return await this.findOneBy({ id });
+  }
+
   async getReplies(postId: number, page: number) {
     return await this.createQueryBuilder('r')
       .innerJoin('r.post', 'p')

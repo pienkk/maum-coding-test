@@ -30,6 +30,19 @@ export class ReplyService {
 
     if (!post) throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
 
+    if (args.replyId) {
+      const reply = await this.replyRepository.getReplyById(args.replyId);
+
+      if (!reply)
+        throw new HttpException('Reply not found', HttpStatus.NOT_FOUND);
+
+      if (reply.replyId)
+        throw new HttpException(
+          'Cannot reply on this reply',
+          HttpStatus.BAD_REQUEST,
+        );
+    }
+
     const entity = CreateUpdateReplyDto.toEntity(args, id);
 
     return this.replyRepository.createReply(entity);
