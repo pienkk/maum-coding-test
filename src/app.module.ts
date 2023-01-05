@@ -13,6 +13,8 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PostModule } from './post/post.module';
 import { ReplyModule } from './reply/reply.module';
+import { APP_FILTER } from '@nestjs/core';
+import { GlobalExceptionFilter } from './util/global-exception.filter';
 
 @Module({
   imports: [
@@ -48,6 +50,12 @@ import { ReplyModule } from './reply/reply.module';
     ReplyModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: GlobalExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}
