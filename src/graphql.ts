@@ -8,6 +8,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export class FetchPostInput {
+    page?: Nullable<string>;
+    search?: Nullable<string>;
+}
+
 export class CreatePostInput {
     title: string;
     description: string;
@@ -17,6 +22,11 @@ export class UpdatePostInput {
     id: string;
     title: string;
     description: string;
+}
+
+export class FetchReplyInput {
+    postId: string;
+    page?: Nullable<string>;
 }
 
 export class CreateReplyInput {
@@ -43,14 +53,19 @@ export class UpdateUserInput {
     password: string;
 }
 
+export class SignIn {
+    email: string;
+    password: string;
+}
+
 export abstract class IQuery {
     abstract fetchPost(id: string): Post | Promise<Post>;
 
-    abstract fetchPosts(page?: Nullable<string>, search?: Nullable<string>): Nullable<FetchPosts> | Promise<Nullable<FetchPosts>>;
+    abstract fetchPosts(fetchPostInput?: Nullable<FetchPostInput>): Nullable<FetchPosts> | Promise<Nullable<FetchPosts>>;
 
-    abstract fetchMyPosts(page?: Nullable<string>, search?: Nullable<string>): Nullable<FetchPosts> | Promise<Nullable<FetchPosts>>;
+    abstract fetchMyPosts(fetchPostInput?: Nullable<FetchPostInput>): Nullable<FetchPosts> | Promise<Nullable<FetchPosts>>;
 
-    abstract fetchReplies(postId: string, page?: Nullable<string>): Nullable<FetchReplies> | Promise<Nullable<FetchReplies>>;
+    abstract fetchReplies(fetchReplyInput?: Nullable<FetchReplyInput>): Nullable<FetchReplies> | Promise<Nullable<FetchReplies>>;
 
     abstract user(): User | Promise<User>;
 }
@@ -64,7 +79,7 @@ export abstract class IMutation {
 
     abstract createReply(createReplyInput: CreateReplyInput): Reply | Promise<Reply>;
 
-    abstract signIn(email: string, password: string): Nullable<Token> | Promise<Nullable<Token>>;
+    abstract signIn(signIn?: Nullable<SignIn>): Token | Promise<Token>;
 
     abstract createUser(createUserInput: CreateUserInput): User | Promise<User>;
 
@@ -97,7 +112,7 @@ export class Reply {
     comment: string;
     created_at: DateTime;
     user: User;
-    parents?: Nullable<Nullable<Reply>[]>;
+    childrenReply?: Nullable<Nullable<Reply>[]>;
 }
 
 export class User {

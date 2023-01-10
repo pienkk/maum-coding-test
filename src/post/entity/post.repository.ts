@@ -47,18 +47,4 @@ export class PostRepository extends Repository<PostEntity> {
       .orderBy('p.created_at', 'ASC')
       .getManyAndCount();
   }
-
-  async createPost(args: PostEntity) {
-    return await this.save(args);
-  }
-
-  async updatePost(args: PostEntity, post: PostEntity) {
-    return await this.save(this.create({ ...post, ...args }));
-  }
-
-  async removePost(post: PostEntity) {
-    post.deleted_at = new Date();
-
-    return await this.save(post);
-  }
 }
