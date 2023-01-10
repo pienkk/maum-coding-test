@@ -41,10 +41,10 @@ export class ReplyEntity {
   @JoinColumn({ name: 'postId' })
   post: PostEntity;
 
-  @OneToMany(() => ReplyEntity, (reply) => reply.children)
-  parents: ReplyEntity[];
+  @OneToMany(() => ReplyEntity, (reply) => reply.parent)
+  childrenReply: ReplyEntity[];
 
-  @ManyToOne(() => ReplyEntity, (reply) => reply.parents)
+  @ManyToOne(() => ReplyEntity, (reply) => reply.childrenReply)
   @JoinColumn({ name: 'replyId' })
-  children: ReplyEntity;
+  parent: ReplyEntity;
 }

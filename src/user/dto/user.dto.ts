@@ -1,6 +1,7 @@
 import {
   IsEmail,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   Matches,
@@ -8,8 +9,8 @@ import {
 
 export class CreateUpdateUserDto {
   @IsOptional()
-  @IsString()
-  id?: string;
+  @IsNumber()
+  id?: number;
 
   @IsNotEmpty()
   @IsString()

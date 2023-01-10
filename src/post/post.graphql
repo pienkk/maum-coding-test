@@ -3,9 +3,9 @@ scalar DateTime
 type Query {
   fetchPost(id: ID!): Post!
 
-  fetchPosts(page: String = "1", search: String = ""): FetchPosts
+  fetchPosts(fetchPostInput: FetchPostInput): FetchPosts
 
-  fetchMyPosts(page: String = "1", search: String = ""): FetchPosts
+  fetchMyPosts(fetchPostInput: FetchPostInput): FetchPosts
 }
 
 type Mutation {
@@ -27,6 +27,11 @@ type Post {
   description: String!
   created_at: DateTime!
   user: User!
+}
+
+input FetchPostInput {
+  page: String = "1"
+  search: String = ""
 }
 
 input CreatePostInput {

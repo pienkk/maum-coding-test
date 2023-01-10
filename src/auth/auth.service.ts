@@ -9,6 +9,6 @@ export class AuthService {
   async tokenValidateUser(
     payload: JwtPayload,
   ): Promise<UserEntity | undefined> {
-    return await this.userRepository.getUserById(payload.id);
+    return await this.userRepository.findOneBy({ id: payload.id });
   }
 }

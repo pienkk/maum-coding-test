@@ -3,7 +3,8 @@ import { ReplyEntity } from '../entity/reply.entity';
 
 export class CreateUpdateReplyDto {
   @IsOptional()
-  id?: string;
+  @IsOptional()
+  id?: number;
 
   @IsNotEmpty()
   @IsNumber()
@@ -16,18 +17,6 @@ export class CreateUpdateReplyDto {
   @IsOptional()
   @IsNumber()
   replyId?: number;
-
-  static toEntity(args: CreateUpdateReplyDto, userId: number): ReplyEntity {
-    const entity = new ReplyEntity();
-    if (args.id) entity.id = Number(args.id);
-    if (args.replyId) entity.replyId = args.replyId;
-
-    entity.postId = args.postId;
-    entity.userId = userId;
-    entity.comment = args.comment;
-
-    return entity;
-  }
 }
 
 export class ResponseReplyDto {
@@ -35,4 +24,14 @@ export class ResponseReplyDto {
 
   @IsNumber()
   count: number;
+}
+
+export class FetchReplyDto {
+  @IsNotEmpty()
+  @IsNumber()
+  id: number;
+
+  @IsOptional()
+  @IsNumber()
+  page?: number = 1;
 }

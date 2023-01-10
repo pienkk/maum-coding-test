@@ -1,6 +1,7 @@
 import { Expose } from 'class-transformer';
 import {
   BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   Entity,
@@ -40,6 +41,7 @@ export class UserEntity {
   replies: ReplyEntity[];
 
   @BeforeInsert()
+  @BeforeUpdate()
   hashPassword() {
     this.password = bcrypt.hashSync(this.password, +process.env.HASH_SALT);
   }

@@ -6,10 +6,6 @@ import { ReplyEntity } from './reply.entity';
 export class ReplyRepository extends Repository<ReplyEntity> {
   SHOW_COUNT = 10;
 
-  async getReplyById(id: number) {
-    return await this.findOneBy({ id });
-  }
-
   async getReplies(postId: number, page: number) {
     return await this.createQueryBuilder('r')
       .innerJoin('r.post', 'p')
@@ -24,9 +20,5 @@ export class ReplyRepository extends Repository<ReplyEntity> {
       .skip(this.SHOW_COUNT * (page - 1))
       .orderBy('r.created_at', 'ASC')
       .getManyAndCount();
-  }
-
-  async createReply(entity: ReplyEntity) {
-    return await this.save(entity);
   }
 }

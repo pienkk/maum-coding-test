@@ -3,7 +3,7 @@ type Query {
 }
 
 type Mutation {
-  signIn(email: String!, password: String!): Token
+  signIn(signIn: SignIn): Token!
 
   createUser(createUserInput: CreateUserInput!): User!
 
@@ -27,6 +27,11 @@ input CreateUserInput {
 
 input UpdateUserInput {
   name: String!
+  email: String!
+  password: String!
+}
+
+input SignIn {
   email: String!
   password: String!
 }

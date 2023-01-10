@@ -4,6 +4,7 @@ import { JwtPayload } from 'src/auth/jwt-payload.interface';
 import { JwtAuthGuard } from 'src/auth/security/auth.guard';
 import { CurrentUser } from 'src/auth/security/auth.user.param';
 import { CreateUpdateUserDto, SignInUserDto } from './dto/user.dto';
+import { UserEntity } from './entity/user.entity';
 import { UserService } from './user.service';
 
 @Resolver()
@@ -11,19 +12,24 @@ export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Mutation('signIn')
-  signIn(@Args('email') email: string, @Args('password') password: string) {
-    const loginInfo: SignInUserDto = { email, password };
-    return this.userService.signIn(loginInfo);
+  signIn(
+    @Args('signIn') args: SignInUserDto,
+  ): Promise<{ accessToken: string }> {
+    return this.userService.signIn(args);
   }
 
   @Mutation('createUser')
-  createUser(@Args('createUserInput') args: CreateUpdateUserDto) {
+  createUser(
+    @Args('createUserInput') args: CreateUpdateUserDto,
+  ): Promise<UserEntity> {
     return this.userService.createUser(args);
   }
 
   @Mutation('updateUser')
   @UseGuards(JwtAuthGuard)
-  updateUser(@Args('updateUserInput') args: CreateUpdateUserDto) {
+  updateUser(
+    @Args('updateUserInput') args: CreateUpdateUserDto,
+  ): Promise<UserEntity> {
     return this.userService.updateUser(args);
   }
 

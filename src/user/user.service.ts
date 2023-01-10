@@ -3,6 +3,7 @@ import { CreateUpdateUserDto, SignInUserDto } from './dto/user.dto';
 import { UserRepository } from './entity/user.repository';
 import { JwtPayload } from 'src/auth/jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
+import { UserEntity } from './entity/user.entity';
 
 @Injectable()
 export class UserService {
@@ -11,52 +12,59 @@ export class UserService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signIn(loginInfo: SignInUserDto) {
-    const { email, password } = loginInfo;
-    const user = await this.userRepository.getUserByEmail(email);
+  async validationUser(email: string, password: string): Promise<UserEntity> {
+    const user = await this.userRepository.findOneBy({ email });
 
     if (!user || user.deleted_at)
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 
     if (!user.comparePassword(password))
       throw new HttpException('Invalid password', HttpStatus.BAD_REQUEST);
+
+    return user;
+  }
+
+  async signIn(loginInfo: SignInUserDto): Promise<{ accessToken: string }> {
+    const { email, password } = loginInfo;
+
+    const user = await this.validationUser(email, password);
 
     const payload: JwtPayload = { id: user.id, email: user.email };
     return { accessToken: this.jwtService.sign(payload) };
   }
 
-  async createUser(args: CreateUpdateUserDto) {
+  async createUser(args: CreateUpdateUserDto): Promise<UserEntity> {
     const { email } = args;
-    const user = await this.userRepository.getUserByEmail(email);
+    const user = await this.userRepository.findOneBy({ email });
 
     if (user && !user.deleted_at)
-      throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+      throw new HttpException('User already exists', HttpStatus.CONFLICT);
 
-    if (user && user.deleted_at) return this.userRepository.reCreateUser(user);
+    if (user && user.deleted_at) {
+      user.deleted_at = null;
+      return await this.userRepository.save(user);
+    }
 
-    return this.userRepository.createUser(args);
+    const userEntity = this.userRepository.create(args);
+    return await this.userRepository.save(userEntity);
   }
 
-  async updateUser(args: CreateUpdateUserDto) {
+  async updateUser(args: CreateUpdateUserDto): Promise<UserEntity> {
     const { email } = args;
-    const user = await this.userRepository.getUserByEmail(email);
+    const user = await this.userRepository.findOneBy({ email });
 
     if (!user || user.deleted_at)
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 
-    return this.userRepository.updateUser(args, user);
+    const updateUser = this.userRepository.create({ ...user, ...args });
+    return await this.userRepository.save(updateUser);
   }
 
-  async removeUser({ id }: JwtPayload, password: string) {
-    const user = await this.userRepository.getUserById(id);
+  async removeUser({ email }: JwtPayload, password: string): Promise<boolean> {
+    const user = await this.validationUser(email, password);
 
-    if (!user || user.deleted_at)
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-
-    if (!user.comparePassword(password))
-      throw new HttpException('Invalid password', HttpStatus.BAD_REQUEST);
-
-    const result = await this.userRepository.removeUser(user);
+    user.deleted_at = new Date();
+    const result = await this.userRepository.save(user);
 
     return result.deleted_at ? true : false;
   }

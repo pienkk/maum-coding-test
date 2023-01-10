@@ -1,5 +1,5 @@
 type Query {
-  fetchReplies(postId: ID!, page: String = "1"): FetchReplies
+  fetchReplies(fetchReplyInput: FetchReplyInput): FetchReplies
 }
 
 type Mutation {
@@ -17,7 +17,12 @@ type Reply {
   comment: String!
   created_at: DateTime!
   user: User!
-  parents: [Reply]
+  childrenReply: [Reply]
+}
+
+input FetchReplyInput {
+  postId: ID!
+  page: String = "1"
 }
 
 input CreateReplyInput {
