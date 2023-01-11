@@ -7,18 +7,18 @@ export class ReplyRepository extends Repository<ReplyEntity> {
   SHOW_COUNT = 10;
 
   async getReplies(postId: number, page: number) {
-    return await this.createQueryBuilder('r')
-      .innerJoin('r.post', 'p')
-      .innerJoinAndSelect('r.user', 'u')
-      .leftJoinAndSelect('r.parents', 'rr')
-      .where('r.postId = :postId', { postId })
-      .andWhere('r.deleted_at is null')
-      .andWhere('r.replyId is null')
-      .andWhere('p.deleted_at is null')
-      .andWhere('u.deleted_at is null')
+    return await this.createQueryBuilder('reply')
+      .innerJoin('reply.post', 'post')
+      .innerJoinAndSelect('reply.user', 'user')
+      .leftJoinAndSelect('reply.childrenReply', 'childReply')
+      .where('reply.postId = :postId', { postId })
+      .andWhere('reply.deleted_at is null')
+      .andWhere('reply.replyId is null')
+      .andWhere('post.deleted_at is null')
+      .andWhere('user.deleted_at is null')
       .take(this.SHOW_COUNT)
       .skip(this.SHOW_COUNT * (page - 1))
-      .orderBy('r.created_at', 'ASC')
+      .orderBy('reply.created_at', 'ASC')
       .getManyAndCount();
   }
 }

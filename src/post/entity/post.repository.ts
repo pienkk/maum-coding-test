@@ -8,43 +8,43 @@ export class PostRepository extends Repository<PostEntity> {
   SHOW_COUNT = 10;
 
   async getPostById(id: number) {
-    return await this.createQueryBuilder('p')
+    return await this.createQueryBuilder('post')
       .where('deleted_at is null')
       .andWhere('id = :id', { id })
       .getOne();
   }
 
   async getPostsAll({ page, search }: FetchPostDto) {
-    return await this.createQueryBuilder('p')
-      .innerJoinAndSelect('p.user', 'u')
-      .where('u.deleted_at is null')
-      .andWhere('p.deleted_at is null')
-      .andWhere('p.title LIKE :search', { search: `%${search}%` })
+    return await this.createQueryBuilder('post')
+      .innerJoinAndSelect('post.user', 'user')
+      .where('user.deleted_at is null')
+      .andWhere('post.deleted_at is null')
+      .andWhere('post.title LIKE :search', { search: `%${search}%` })
       .take(this.SHOW_COUNT)
       .skip(this.SHOW_COUNT * (page - 1))
-      .orderBy('p.created_at', 'ASC')
+      .orderBy('post.created_at', 'ASC')
       .getManyAndCount();
   }
 
   async getPostOne(id: number) {
-    return await this.createQueryBuilder('p')
-      .innerJoinAndSelect('p.user', 'u')
-      .where('u.deleted_at is null')
-      .andWhere('p.deleted_at is null')
-      .andWhere('p.id = :id', { id })
+    return await this.createQueryBuilder('post')
+      .innerJoinAndSelect('post.user', 'user')
+      .where('user.deleted_at is null')
+      .andWhere('post.deleted_at is null')
+      .andWhere('post.id = :id', { id })
       .getOne();
   }
 
   async getMyPosts({ page, search }: FetchPostDto, userId: number) {
-    return await this.createQueryBuilder('p')
-      .where('p.userId = :userId', {
+    return await this.createQueryBuilder('post')
+      .where('post.userId = :userId', {
         userId,
       })
-      .andWhere('p.deleted_at is null')
-      .andWhere('p.title LIKE :search', { search: `%${search}%` })
+      .andWhere('post.deleted_at is null')
+      .andWhere('post.title LIKE :search', { search: `%${search}%` })
       .take(this.SHOW_COUNT)
       .skip(this.SHOW_COUNT * (page - 1))
-      .orderBy('p.created_at', 'ASC')
+      .orderBy('post.created_at', 'ASC')
       .getManyAndCount();
   }
 }
