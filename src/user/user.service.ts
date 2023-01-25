@@ -4,11 +4,14 @@ import { UserRepository } from './entity/user.repository';
 import { JwtPayload } from 'src/auth/jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from './entity/user.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UserService {
   constructor(
-    private readonly userRepository: UserRepository,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
     private readonly jwtService: JwtService,
   ) {}
 

@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmExModule } from 'config/typeorm/typeorm-ex.module';
-import { UserRepository } from './entity/user.repository';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from './entity/user.entity';
 
 @Module({
   imports: [
-    TypeOrmExModule.forCustomRepository([UserRepository]),
+    TypeOrmModule.forFeature([UserEntity]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({
