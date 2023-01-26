@@ -17,7 +17,6 @@ export class UserService {
 
   async validationUser(email: string, password: string): Promise<UserEntity> {
     const user = await this.userRepository.findOneBy({ email });
-
     if (!user || user.deleted_at)
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 
