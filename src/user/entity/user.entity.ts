@@ -49,4 +49,11 @@ export class UserEntity {
   comparePassword(attempt: string): boolean {
     return bcrypt.compareSync(attempt, this.password);
   }
+
+  static of(params: Partial<UserEntity>): UserEntity {
+    const user = new UserEntity();
+    Object.assign(user, params);
+
+    return user;
+  }
 }

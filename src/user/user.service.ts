@@ -4,17 +4,19 @@ import { UserRepository } from './entity/user.repository';
 import { JwtPayload } from 'src/auth/jwt-payload.interface';
 import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from './entity/user.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UserService {
   constructor(
-    private readonly userRepository: UserRepository,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
     private readonly jwtService: JwtService,
   ) {}
 
   async validationUser(email: string, password: string): Promise<UserEntity> {
     const user = await this.userRepository.findOneBy({ email });
-
     if (!user || user.deleted_at)
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
 
