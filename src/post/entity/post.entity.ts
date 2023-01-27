@@ -36,4 +36,11 @@ export class PostEntity {
 
   @OneToMany(() => ReplyEntity, (reply) => reply.post)
   replies: ReplyEntity[];
+
+  static of(params: Partial<PostEntity>): PostEntity {
+    const post = new PostEntity();
+    Object.assign(post, params);
+
+    return post;
+  }
 }
