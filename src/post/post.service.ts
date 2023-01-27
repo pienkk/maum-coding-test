@@ -58,7 +58,6 @@ export class PostService {
     args: CreateUpdatePostDto,
   ): Promise<PostEntity> {
     const post = this.postRepository.create({ ...args, userId });
-
     return await this.postRepository.save(post);
   }
 
