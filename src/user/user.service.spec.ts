@@ -22,7 +22,7 @@ describe('UserService', () => {
   let jwtService: JwtService;
   let userRepository: MockRepository<UserEntity>;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [JwtModule],
       providers: [

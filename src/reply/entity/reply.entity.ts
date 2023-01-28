@@ -47,4 +47,11 @@ export class ReplyEntity {
   @ManyToOne(() => ReplyEntity, (reply) => reply.childrenReply)
   @JoinColumn({ name: 'replyId' })
   parent: ReplyEntity;
+
+  static of(params: Partial<ReplyEntity>): ReplyEntity {
+    const reply = new ReplyEntity();
+    Object.assign(reply, params);
+
+    return reply;
+  }
 }

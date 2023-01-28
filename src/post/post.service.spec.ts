@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { count } from 'console';
 import {
   CreateUpdatePostDto,
   FetchPostDto,
@@ -14,7 +13,7 @@ describe('PostService', () => {
   let postService: PostService;
   let postRepository: PostRepository;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [PostService, PostRepository],
     }).compile();
